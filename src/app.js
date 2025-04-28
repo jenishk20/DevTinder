@@ -4,25 +4,70 @@ const { adminAuth, userAuth } = require("./middleware/auth");
 const { connect } = require("./config/database");
 const { User } = require("./models/user");
 const app = express();
+app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  const userObj = {
-    firstName: "Aks",
-    lastName: "Kumar",
-    age: 21,
-    email: "aks.kumar@northeastern.edu",
-    password: "aks123",
-    gender: "M",
-  };
-
+  const userObj = req.body;
   try {
     const user = new User(userObj);
     await user.save();
     res.send("User created successfully");
   } catch (err) {
-    res.status(400).error("Error in creating user");
+    res.status(400).send(err.message);
   }
-  // Creating a new instance of a user model.
+});
+
+app.get("/user", async (req, res) => {
+  try {
+    const userLName = req.body.lastName;
+    console.log(userLName);
+    const user = await User.find({ lastName: userLName });
+    console.log(user.length);
+    if (user.length === 0) {
+      res.status(404).send("User not found");
+    } else {
+      res.send(user);
+    }
+  } catch (err) {
+    res.status(400).send("Error in fetching user");
+  }
+});
+
+app.get("/feed", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send(users);
+  } catch (err) {
+    res.status(400).send("Error in fetching users");
+  }
+});
+
+app.patch("/user/:userId", async (req, res) => {
+  const data = req.body;
+  const userId = req.params?.userId;
+
+  try {
+    const ALLOWED_UPDATES = ["photoURL", "skills", "about", "gender", "age"];
+    const isUpdateAllowed = Object.keys(data).every((key) =>
+      ALLOWED_UPDATES.includes(key)
+    );
+
+    if (!isUpdateAllowed) {
+      throw new Error("Update not allowed");
+    }
+
+    if (data.skills.length > 5) {
+      throw new Error("Skills length should be less than 5");
+    }
+
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    res.send(user);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
 });
 
 // app.get("/getUserData", (req, res) => {
