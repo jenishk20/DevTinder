@@ -1,13 +1,16 @@
 const express = require("express");
 require("dotenv").config();
 const validator = require("validator");
-const { adminAuth, userAuth } = require("./middleware/auth");
+const { userAuth } = require("./middleware/auth");
 const { connect } = require("./config/database");
 const { User } = require("./models/user");
 const { validateSignupData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup", async (req, res) => {
   try {
@@ -16,7 +19,6 @@ app.post("/signup", async (req, res) => {
     // Encrypt Data
     const { firstName, lastName, emailId, password } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
-    console.log(passwordHash);
 
     const userObj = req.body;
 
@@ -37,9 +39,7 @@ app.post("/signup", async (req, res) => {
 app.get("/user", async (req, res) => {
   try {
     const userLName = req.body.lastName;
-    console.log(userLName);
     const user = await User.find({ lastName: userLName });
-    console.log(user.length);
     if (user.length === 0) {
       res.status(404).send("User not found");
     } else {
@@ -99,26 +99,30 @@ app.post("/login", async (req, res) => {
       throw new Error("Invalid Credentials");
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = user.validatePassword(password);
     if (!isPasswordValid) {
       throw new Error("Invalid password");
     }
+    const token = await user.getJWT();
+    // Cookie logic
+    res.cookie("token", token, { expires: new Date(Date.now() + 900000) });
     res.send("Login successful");
   } catch (err) {
     res.status(400).send(err.message);
   }
 });
 
-// app.get("/getUserData", (req, res) => {
-//   throw new Error("This is a test error");
-//   res.send("This is the user data");
-// });
+app.get("/profile", userAuth, async (req, res) => {
+  try {
+    res.status(200).send(req.user);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
 
-// app.use("/", (err, req, res, next) => {
-//   if (err) {
-//     res.status(500).send("There was an error");
-//   }
-// });
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+  res.send("This is the send connection request route");
+});
 
 // ======================================== ======================== ================= //
 
