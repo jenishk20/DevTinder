@@ -9,7 +9,8 @@ const userAuth = async (req, res, next) => {
     if (!token) {
       throw new Error("No token found");
     }
-    const decodedObj = await jwt.verify(token, "This is a secret key");
+    const decodedObj = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+
     const userProfile = await User.findById(decodedObj._id);
     if (!userProfile) {
       throw new Error("User not found");
