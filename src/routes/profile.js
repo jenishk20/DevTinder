@@ -1,9 +1,10 @@
 const express = require("express");
 const { User } = require("../models/user");
 const { userAuth } = require("../middleware/auth");
+const { validateProfileEditData } = require("../utils/validation");
 const profileRouter = express.Router();
 
-profileRouter.get("/profile", userAuth, async (req, res) => {
+profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     res.status(200).send(req.user);
   } catch (err) {
@@ -11,29 +12,20 @@ profileRouter.get("/profile", userAuth, async (req, res) => {
   }
 });
 
-profileRouter.patch("/user/:userId", async (req, res) => {
-  const data = req.body;
-  const userId = req.params?.userId;
-
+profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
   try {
-    const ALLOWED_UPDATES = ["photoURL", "skills", "about", "gender", "age"];
-    const isUpdateAllowed = Object.keys(data).every((key) =>
-      ALLOWED_UPDATES.includes(key)
-    );
-
-    if (!isUpdateAllowed) {
+    if (!validateProfileEditData(req)) {
       throw new Error("Update not allowed");
     }
+    const loggedInUser = req.user;
 
-    if (data.skills.length > 5) {
-      throw new Error("Skills length should be less than 5");
-    }
-
-    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
-      returnDocument: "after",
-      runValidators: true,
+    Object.keys(req.body).forEach((key) => {
+      loggedInUser[key] = req.body[key];
     });
-    res.send(user);
+
+    await loggedInUser.save();
+
+    res.send(loggedInUser.firstName + " your profile is updated successfully");
   } catch (err) {
     res.status(400).send(err.message);
   }
