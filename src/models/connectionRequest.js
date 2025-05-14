@@ -5,6 +5,7 @@ const connectionRequestSchema = new Schema(
   {
     fromUserId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     toUserId: {
@@ -27,8 +28,6 @@ connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
 
 connectionRequestSchema.pre("save", function (next) {
   const connectionRequest = this;
-  // CHECK if from and to user are the same
-  console.log("Coming here in pre save");
   if (
     connectionRequest.fromUserId.toString() ===
     connectionRequest.toUserId.toString()

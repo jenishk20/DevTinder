@@ -10,11 +10,13 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const userConnectionsRouter = require("./routes/userConnections");
 const requestsRouter = require("./routes/requests");
+const userRouter = require("./routes/user");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", userConnectionsRouter);
 app.use("/", requestsRouter);
+app.use("/", userRouter);
 
 connect()
   .then(() => {
