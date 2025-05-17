@@ -4,3 +4,6 @@
 - Restructuring the Application code to remove unnecessary files and folders.
 - Install DaisyUI
 - Adding up Navbar component
+- Setting up routing in application
+- Create Browser Router and Setup Children Routes using Outlet
+- Create Footer of application

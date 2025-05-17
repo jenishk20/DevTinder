@@ -26,3 +26,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+devtinder-ui/package-lock*
