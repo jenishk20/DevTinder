@@ -7,3 +7,5 @@
 - Setting up routing in application
 - Create Browser Router and Setup Children Routes using Outlet
 - Create Footer of application
+- Create Login Page and Install Axios
+- Setup CORS on backend and add middleware to App configuration of credentials to be true

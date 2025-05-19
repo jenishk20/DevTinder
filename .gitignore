@@ -1,5 +1,7 @@
 devtinder-backend/node_modules/*
 devtinder-ui/node_modules/*
+devtinder-ui/package-lock.json
+devtinder-backend/package-lock.json
 .env*
 
 # Logs
@@ -27,4 +29,4 @@ dist-ssr
 *.sln
 *.sw?
 
-devtinder-ui/package-lock*
+

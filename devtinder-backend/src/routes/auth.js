@@ -35,8 +35,12 @@ authRouter.post("/signup", async (req, res) => {
 authRouter.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
-    if (!emailId || !password || !validator.isEmail(emailId)) {
+    if (!emailId || !password) {
       throw new Error("Email and password are required");
+    }
+
+    if (!validator.isEmail(emailId)) {
+      throw new Error("Invalid email format");
     }
 
     const user = await User.findOne({ emailId });
@@ -51,7 +55,10 @@ authRouter.post("/login", async (req, res) => {
     const token = await user.getJWT();
     // Cookie logic
     res.cookie("token", token, { expires: new Date(Date.now() + 900000) });
-    res.send("Login successful");
+    res.status(200).json({
+      message: "Login successful",
+      data: user,
+    });
   } catch (err) {
     res.status(400).send(err.message);
   }
