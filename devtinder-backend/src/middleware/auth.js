@@ -7,6 +7,7 @@ const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     if (!token) {
+      
       throw new Error("No token found");
     }
     const decodedObj = await jwt.verify(token, process.env.JWT_SECRET_KEY);
