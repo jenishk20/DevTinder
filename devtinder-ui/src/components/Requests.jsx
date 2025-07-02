@@ -2,12 +2,25 @@ import axios from "axios";
 import React, { use, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setRequests } from "../utils/requestsSlice";
+import { setRequests, removeRequest } from "../utils/requestsSlice";
 import { BASE_URL } from "../utils/constants";
 const Requests = () => {
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.requests);
-
+  const reviewRequest = async (status, requestId) => {
+    try {
+      const response = await axios.post(
+        BASE_URL + "/requests/review/" + status + "/" + requestId,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(removeRequest(requestId));
+    } catch (error) {
+      console.error("Error reviewing request:", error);
+    }
+  };
   const fetchRequests = async () => {
     try {
       const response = await axios.get(BASE_URL + "/user/requests/received", {
@@ -23,7 +36,8 @@ const Requests = () => {
   }, []);
 
   if (!requests) return;
-  if (requests.length === 0) return <h1>No Connections Found</h1>;
+  if (requests.length === 0)
+    return <h1 className="flex justify-center">No Requests Found</h1>;
   return (
     <div className="text-center my-10">
       <h1 className="text-bold text-2xl">Connections</h1>
@@ -50,8 +64,18 @@ const Requests = () => {
               {age && gender && <p>{age + " " + gender}</p>}
             </div>
             <div>
-              <button className="btn btn-primary mx-2">Accept</button>
-              <button className="btn btn-secondary mx-2">Reject</button>
+              <button
+                className="btn btn-primary mx-2"
+                onClick={() => reviewRequest("accepted", item?._id)}
+              >
+                Accept
+              </button>
+              <button
+                className="btn btn-secondary mx-2"
+                onClick={() => reviewRequest("rejected", item?._id)}
+              >
+                Reject
+              </button>
             </div>
           </div>
         );
