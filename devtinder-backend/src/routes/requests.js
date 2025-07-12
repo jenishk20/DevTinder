@@ -42,7 +42,6 @@ requestsRouter.post(
         status,
       });
 
-      console.log("going to save data");
       const data = await request.save();
       res.json({
         message:
@@ -52,6 +51,7 @@ requestsRouter.post(
         data,
       });
     } catch (err) {
+      console.log(err);
       res.status(400).json({
         message: err.message,
       });

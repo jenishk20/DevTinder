@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import UserCard from "./UserCard";
 const Feed = () => {
   const dispatch = useDispatch();
-
   const feed = useSelector((store) => store.feed);
   const getFeed = async () => {
     if (feed) return;
@@ -29,13 +28,18 @@ const Feed = () => {
     getFeed();
   }, []);
 
-  console.log(feed);
-
+  if (feed && feed.length === 0) {
+    return (
+      <div className="flex justify-center my-10">
+        <p className="text-center">No users found in the feed.</p>
+      </div>
+    );
+  }
   return (
     <div className="flex justify-center my-10">
       <div>
         {feed && feed.length > 0 ? (
-          <UserCard user={feed[0]}></UserCard>
+          <UserCard user={feed[2]}></UserCard>
         ) : (
           <p className="text-center">Loading feed...</p>
         )}
