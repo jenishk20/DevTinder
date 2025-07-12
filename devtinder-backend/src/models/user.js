@@ -68,6 +68,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+
 userSchema.methods.getJWT = async function () {
   const token = await jwt.sign({ _id: this._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "1h",
