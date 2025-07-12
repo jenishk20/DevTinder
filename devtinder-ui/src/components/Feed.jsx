@@ -4,20 +4,17 @@ import { useDispatch } from "react-redux";
 import { addFeed } from "../utils/feedSlice";
 import { useSelector } from "react-redux";
 import UserCard from "./UserCard";
+import axios from "axios";
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector((store) => store.feed);
   const getFeed = async () => {
     if (feed) return;
     try {
-      const response = await fetch(
-        BASE_URL + "/feed",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      const data = await response.json();
+      const response = await axios.get(BASE_URL + "/user/feed", {
+        withCredentials: true,
+      });
+      const data = await response.data;
       dispatch(addFeed(data));
     } catch (error) {
       console.error("Error fetching feed:", error);
@@ -35,6 +32,7 @@ const Feed = () => {
       </div>
     );
   }
+
   return (
     <div className="flex justify-center my-10">
       <div>
