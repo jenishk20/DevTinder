@@ -50,8 +50,7 @@ const userSchema = new Schema(
     },
     photoURL: {
       type: String,
-      default:
-        "https://avatars.githubusercontent.com/u/60069162?s=400&u=065dc702c7e167a7978e28a343a2319b10c188a8&v=4",
+      default: "https://cdn-icons-png.flaticon.com/512/3675/3675805.png",
       validate(value) {
         if (!validator.isURL(value)) {
           throw new Error("Photo URL is not valid");

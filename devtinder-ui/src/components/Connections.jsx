@@ -21,8 +21,15 @@ const Connections = () => {
       console.error("Error fetching connections:", error);
     }
   };
-  if (!connections) return;
-  if (connections.length === 0) return <h1>No Connections Found</h1>;
+
+  if (!connections || connections.length === 0) {
+    return (
+      <div className="flex justify-center my-10">
+        <p className="text-center">No connections found.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="text-center my-10">
       <h1 className="text-bold text-2xl">Connections</h1>
