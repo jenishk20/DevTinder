@@ -158,7 +158,7 @@ const EditProfile = ({ user }) => {
           </div>
         </div>
       </div>
-      <UserCard user={{ firstName, lastName, about, gender, age, photoURL }} />
+      <UserCard user={{ firstName, lastName, about, gender, age, photoURL }} comingFromProfile = {true}/>
     </div>
   );
 };

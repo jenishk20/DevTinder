@@ -2,7 +2,7 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { removeItemFromFeed } from "../utils/feedSlice";
-const UserCard = ({ user }) => {
+const UserCard = ({ user, comingFromProfile = false }) => {
   const dispatch = useDispatch();
   const { _id, firstName, lastName, photoURL, about, age, gender } = user || {};
   const handleSendRequest = async (status, toUserId) => {
@@ -37,21 +37,22 @@ const UserCard = ({ user }) => {
           <span className="font-bold">Gender:</span>
           {gender || "Not specified"}
         </div>
-
-        <div className="card-actions justify-center my-4">
-          <button
-            className="btn btn-primary"
-            onClick={() => handleSendRequest("ignored", _id)}
-          >
-            Ignore
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => handleSendRequest("interested", _id)}
-          >
-            Interested
-          </button>
-        </div>
+        {!comingFromProfile && (
+          <div className="card-actions justify-center my-4">
+            <button
+              className="btn btn-primary"
+              onClick={() => handleSendRequest("ignored", _id)}
+            >
+              Ignore
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => handleSendRequest("interested", _id)}
+            >
+              Interested
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
