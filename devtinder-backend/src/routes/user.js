@@ -54,7 +54,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 userRouter.get("/user/feed", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
-    
+
     const page = req.query.page || 1;
     let limit = req.query.limit || 10;
 
@@ -66,7 +66,6 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
       $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
     }).select("fromUserId toUserId status");
 
-    console.log(connectionRequests);
     const hideUsersFromFeed = new Set();
     connectionRequests.forEach((request) => {
       hideUsersFromFeed.add(request.fromUserId.toString());

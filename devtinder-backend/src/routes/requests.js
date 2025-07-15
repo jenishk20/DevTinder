@@ -34,8 +34,6 @@ requestsRouter.post(
         throw new Error("Connection request already exists");
       }
 
-      console.log("Coming here");
-
       const request = new ConnectionRequestModel({
         fromUserId,
         toUserId,
