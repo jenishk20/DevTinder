@@ -3,7 +3,6 @@ import UserCard from "./UserCard";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 const EditProfile = ({ user }) => {
-  console.log(user);
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
@@ -158,7 +157,10 @@ const EditProfile = ({ user }) => {
           </div>
         </div>
       </div>
-      <UserCard user={{ firstName, lastName, about, gender, age, photoURL }} comingFromProfile = {true}/>
+      <UserCard
+        user={{ firstName, lastName, about, gender, age, photoURL }}
+        comingFromProfile={true}
+      />
     </div>
   );
 };
