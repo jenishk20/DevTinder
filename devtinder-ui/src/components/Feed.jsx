@@ -34,13 +34,16 @@ const Feed = () => {
   }
 
   return (
-    <div className="flex justify-center my-10">
-      <div>
-        {feed && feed.length > 0 ? (
-          <UserCard user={feed[0]} comingFromProfile={false}></UserCard>
-        ) : (
-          <p className="text-center">Loading feed...</p>
-        )}
+    <div>
+      <div className="font-bold text-2xl text-center my-4">Your Feed</div>
+      <div className="flex justify-center my-10">
+        <div>
+          {feed && feed.length > 0 ? (
+            <UserCard user={feed[0]} comingFromProfile={false}></UserCard>
+          ) : (
+            <p className="text-center">Loading feed...</p>
+          )}
+        </div>
       </div>
     </div>
   );
