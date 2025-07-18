@@ -1,10 +1,22 @@
-Middlewares => What is middlewares and how ExpressJS uses it?
+# DevTinder
+DevTinder is a web application designed to connect developers with potential job opportunities and projects. It allows users to create profiles, showcase their skills, and match with companies or projects that align with their expertise.
 
-## Pagination :
+## Features
+- User authentication and profile management
+- Skill tagging and search functionality
+- Project and job listing
+- Matching algorithm to connect users with relevant opportunities
+- Real-time chat functionality
+- Responsive design for mobile and desktop users
 
-/feed?page=1&limit=10 => First 10 users ( 1 - 10 ) .skip(0) .limit(10)
-/feed?page=2&limit=10 => Next 10 users ( 11 - 20 )  .skip(10) .limit(10)
+## Technologies Used
+- Frontend: React, Redux, Tailwind CSS
+- Backend: Node.js, Express, MongoDB
+- Authentication: JWT, bcrypt
+- Real-time communication: Socket.io
+- Deployment: Docker, AWS
 
-In MongoDB : Skip and Limit functions
-.skip()
-.limit()
+
+
+
+
